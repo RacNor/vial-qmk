@@ -45,42 +45,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 };
 #endif
 
-#ifdef OLED_ENABLE
-static void print_status_narrow(void) {
-    // Create OLED content
-    oled_write_P(PSTR("\n"), false);
-    oled_write_P(PSTR(""), false);
-    oled_write_P(PSTR("Lotus -58-"), false);
-    oled_write_P(PSTR("\n"), false);
-
-    // Print current layer
-    oled_write_P(PSTR("Layer"), false);
-    switch (get_highest_layer(layer_state)) {
-        case 0:
-            oled_write_P(PSTR("-Base\n"), false);
-            break;
-        case 1:
-            oled_write_P(PSTR("-Num \n"), false);
-            break;
-        case 2:
-            oled_write_P(PSTR("-Func\n"), false);
-            break;
-        case 3:
-            oled_write_P(PSTR("-Sys \n"), false);
-            break;
-        default:
-            oled_write_P(PSTR("Undef"), false);
-    }
-    
-    oled_write_P(PSTR("\n"), false);
-    led_t led_usb_state = host_keyboard_led_state();
-    oled_write_ln_P(PSTR("Caps- lock"), led_usb_state.caps_lock);
-    
+layer_state_t layer_state_set_user(layer_state_t state) {
+    return update_tri_layer_state(state, 1, 2, 3);
 }
-
-bool oled_task_user(void) {
-    // Render the OLED
-    print_status_narrow();
-    return false;
-}
-#endif
