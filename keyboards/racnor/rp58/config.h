@@ -9,7 +9,8 @@
 #define SPLIT_LED_STATE_ENABLE
 #define SPLIT_OLED_ENABLE
 
-
+#define SERIAL_USART_TX_PIN GP1
+#define SERIAL_PIO_USE_PIO1
 //#undef I2C_DRIVER
 //#define I2C_DRIVER I2CD0
 //#undef I2C1_SCL_PIN
