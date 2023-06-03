@@ -54,7 +54,7 @@
             "sync_modifiers": true
         },
         "usb_detect": {
-            "enabled": true
+            "enabled": false
         }
     },
     "url": "https://lectronz.com/stores/tweetys-wild-thinking",
