@@ -1,50 +1,50 @@
 #include QMK_KEYBOARD_H
-#include "os_detection.h"
 
 #ifdef OLED_ENABLE
 
-#define LAYER_STATE_SIZE 3
+const char logo[] PROGMEM = {
+    0,  0,  0,  0,  0,  0,  0,  0, 96,240,224,192,  0,  0,  0,  0,  0,  0,  0,  0,192,224,240, 96,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,192,240,248,252,255,207,207,255,255,255,255,255,255,207,207,255,252,248,240,192,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 14,  0,  0,  0,  0,  0,
+};
+const char layer_0[] PROGMEM ={
+    0,  0,  0,  0,255,255,  3,  3,  3,  3,131,131,227,227, 99, 99, 99, 99,227,227,131,131,  3,  3,  3,  3,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,  0,  0,  0,  0,255,255,255,255,  0,  0,  0,  0,255,255,255,255,  0,  0,  0,  0,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,192,192,192,192,193,193,199,199,198,198,198,198,199,199,193,193,192,192,192,192,255,255,  0,  0,  0,  0,
+};
+const char layer_1[] PROGMEM = {
+    0,  0,  0,  0,255,255,  3,  3,  3,  3,  3,  3,131,131,227,227,227,227,  3,  3,  3,  3,  3,  3,  3,  3,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,  0,  0,  0,  0,  0,  0,  1,  1,255,255,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,192,192,192,192,192,192,198,198,199,199,199,199,198,198,192,192,192,192,192,192,255,255,  0,  0,  0,  0,
+};
+const char layer_2[] PROGMEM = {
+    0,  0,  0,  0,255,255,  3,  3,  3,  3,131,131,227,227, 99, 99, 99, 99,227,227,131,131,  3,  3,  3,  3,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,  0,  0,  0,  0,129,129,225,225,120,120, 24, 24, 31, 31,  7,  7,  0,  0,  0,  0,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,192,192,192,192,199,199,199,199,198,198,198,198,198,198,198,198,192,192,192,192,255,255,  0,  0,  0,  0,
+};
+const char layer_3[] PROGMEM = {
+    0,  0,  0,  0,255,255,  3,  3,  3,  3,131,131,227,227, 99, 99, 99, 99,227,227,131,131,  3,  3,  3,  3,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,  0,  0,  0,  0,129,129,129,129, 24, 24, 24, 24,255,255,231,231,  0,  0,  0,  0,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,192,192,192,192,193,193,199,199,198,198,198,198,199,199,193,193,192,192,192,192,255,255,  0,  0,  0,  0,
+};
+const char layer_4[] PROGMEM = {
+    0,  0,  0,  0,255,255,  3,  3,  3,  3,227,227,227,227,  3,  3,  3,  3,227,227,227,227,  3,  3,  3,  3,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,  0,  0,  0,  0, 31, 31,127,127, 96, 96, 96, 96,255,255,255,255,  0,  0,  0,  0,255,255,  0,  0,  0,  0,  0,  0,  0,  0,255,255,192,192,192,192,192,192,192,192,192,192,192,192,199,199,199,199,192,192,192,192,255,255,  0,  0,  0,  0,
+};
 
 void render_layer(void) {
-    switch(detected_host_os()) {
-        case OS_MACOS:
-          oled_write_P(PSTR("M\n"), false);
-          break;
-        case OS_LINUX:
-          oled_write_P(PSTR("L\n"), false);
-          break;
-        case OS_WINDOWS:
-          oled_write_P(PSTR("W\n"), false);
-          break;
-        case OS_IOS:
-          oled_write_P(PSTR("I\n"), false);
-          break;
-        default:
-          oled_write_P(PSTR("U\n"), false);
-    }
-
-    oled_write_P(PSTR("Fn:"), false);
-    static char buff[LAYER_STATE_SIZE];
-    get_numeric_str(buff, LAYER_STATE_SIZE, get_highest_layer(layer_state), ' ');
-    oled_write(buff, false);
-}
-void render_status(void) {
-    led_t led_usb_state = host_keyboard_led_state();
-    oled_write_P(PSTR("C"), led_usb_state.caps_lock);
-    oled_write_P(PSTR(" "), false);
-    oled_write_P(PSTR("N"), led_usb_state.num_lock);
-    oled_write_P(PSTR(" "), false);
-    oled_write_P(PSTR("S\n"), led_usb_state.scroll_lock);
-}
-
-static void print_status_narrow(void) {
-    render_status();
-    render_layer();
+  switch(get_highest_layer(layer_state)) {
+  case 0:
+    oled_write_raw(layer_0, sizeof(layer_0));
+    break;
+  case 1:
+    oled_write_raw(layer_1, sizeof(layer_1));
+    break;
+  case 2:
+    oled_write_raw(layer_2, sizeof(layer_2));
+    break;
+  case 3:
+    oled_write_raw(layer_3, sizeof(layer_3));
+    break;
+  default:
+    oled_write_P(PSTR("Ooops\n"), false);
+  }
 }
 
 bool oled_task_user(void) {
     // Render the OLED
-    print_status_narrow();
+    render_layer();
+    oled_set_cursor(0, 13);
+    oled_write_raw(logo, sizeof(logo));
     return false;
 }
 #endif
