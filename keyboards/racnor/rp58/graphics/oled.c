@@ -35,6 +35,9 @@ void render_layer(void) {
   case 3:
     oled_write_raw(layer_3, sizeof(layer_3));
     break;
+  case 4:
+    oled_write_raw(layer_4, sizeof(layer_4));
+    break;
   default:
     oled_write_P(PSTR("Ooops\n"), false);
   }
