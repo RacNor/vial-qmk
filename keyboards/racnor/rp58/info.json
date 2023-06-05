@@ -34,10 +34,12 @@
     },
     "rgblight": {
         "led_count": 70,
-        "pin": "GP0",
         "split": true,
         "split_count": [35, 35],
         "sleep": true
+    },
+    "ws2812": {
+        "pin": "GP0"
     },
     "split": {
         "enabled": true,
