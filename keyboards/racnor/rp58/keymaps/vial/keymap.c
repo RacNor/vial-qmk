@@ -76,8 +76,15 @@ bool is_mac(void) {
   }
 }
 
-void keyboard_post_init_user(void) {
+uint32_t startup_exec(uint32_t trigger_time, void *cb_arg) {
+  os_variant_t os_type = detected_host_os();
+  /* do something */
   keymap_config.swap_lalt_lgui = is_mac();
+  return os_type ? 500 : 0;
+}
+
+void keyboard_post_init_user(void) {
+  defer_exec(100, startup_exec, NULL);
 }
 
 #define L_CONTROL(is_mac, kc) (is_mac ? LGUI(kc) : LCTL(kc))
